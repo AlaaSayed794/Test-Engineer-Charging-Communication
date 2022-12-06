@@ -1,0 +1,314 @@
+<!-- eslint-disable -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Test Results - {{browser}}</title>
+
+  <style>
+    body {
+      margin: 10px;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 0.8em;
+    }
+
+    h2 {
+      font-size: 1.2em;
+      margin: 0;
+      padding: 0;
+    }
+
+    h3 {
+      font-size: 1em;
+      margin: 0;
+      padding: 0;
+    }
+
+    .toggleSuccess,
+    .toggleError {
+      margin-right: 10px;
+    }
+
+    .errmessages {
+      background-color: rgba(238, 64, 64, 0.43);
+      border: 1px solid rgba(235, 28, 28, 0.78);
+      padding: 5px;
+    }
+
+    .errmessages h2 {
+      margin: 5px 0;
+      font-size: 1em;
+    }
+
+    .errmessages .errors {
+      display: none;
+    }
+
+    .suites {
+      margin: 0 0 0 30px;
+    }
+
+    .package {
+      margin: 15px 0;
+    }
+
+    .package>.name {
+      cursor: pointer;
+    }
+
+    .suite {
+      margin: 15px 0;
+    }
+
+    .suite>.name {
+      cursor: pointer;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    .testcases {}
+
+    .status {
+      display: inline-block;
+    }
+
+    .testcase .name {
+      display: inline-block;
+    }
+
+    .success {
+      color: rgb(56, 142, 56);
+    }
+
+    .testcase img {
+      max-width: 80%;
+    }
+
+    .package.error>.name {
+      color: rgb(178, 43, 43);
+    }
+
+    .suite.error>.name {
+      color: rgb(178, 43, 43);
+    }
+
+    .testcase.success .name {
+      color: rgb(56, 142, 56);
+    }
+
+    .testcase.error .status {
+      color: rgb(178, 43, 43);
+    }
+
+    table {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    td {
+      padding: 7px;
+      border-top: none;
+      border-left: 1px black solid;
+      border-bottom: 1px black solid;
+      border-right: none;
+    }
+
+    td.pass {
+      color: #003b07;
+      background: #86e191;
+    }
+
+    td.skip {
+      color: #7d3a00;
+      background: #ffd24a;
+    }
+
+    td.fail {
+      color: #5e0e00;
+      background: #ff9c8a;
+    }
+
+    tr:last-child {
+      border-top: 1px black solid;
+    }
+
+    tr:last-child td {
+      border-top: 1px black solid;
+    }
+
+    tr:first-child td {
+      border-top: 1px black solid;
+    }
+
+    td:last-child {
+      border-right: 1px black solid;
+    }
+
+    tr.overview td {
+      padding-bottom: 0px;
+      border-bottom: none;
+    }
+
+    tr.overview.last td {
+      padding-bottom: 3px;
+    }
+
+    ul.assertions {
+      list-style-type: none;
+    }
+
+    span.error {
+      color: #AD2B2B;
+    }
+
+    span.success {
+      color: #53891E;
+    }
+
+    .stacktrace {
+      display: inline;
+    }
+
+    .stacktrace code {
+      display: none;
+    }
+
+    #nightwatch-logo {
+      position: absolute;
+      top: 20px;
+      right: 33px;
+      width: 70px;
+      height: 75px;
+      background: transparent url('http://nightwatchjs.org/img/logo-nightwatch.png') no-repeat;
+      background-size: 70px 75px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Test Results</h1>
+
+  <table border="0" cellpadding="0" cellspacing="0">
+    <tr class="overview">
+      <td colspan="3"><strong>Timestamp:</strong> {{timestamp}}</td>
+    </tr>
+    <tr class="overview last">
+      <td colspan="3"><strong>Tests:</strong> {{totalTests}}<br></td>
+    </tr>
+    <tr>
+      <td class="pass"><strong>{{passedTests}}</strong> passed</td>
+      <td class="fail"><strong>{{failedTests}}</strong> failures</td>
+    </tr>
+  </table>
+  <a class="toggleSuccess" href="#">Show/Hide Successes</a>
+  <div id="container">
+    {{#each results}}
+    <div {{#if (fileOrSuiteSuccess this)}} class="package success" {{else}} class="package error" {{/if}}>
+      <h2 class="name">{{this.title}}</h2>
+      <div class="suites">
+        {{#each this.suites}}
+        <div {{#if (fileOrSuiteSuccess this)}} class="suite success" {{else}} class="suite error" {{/if}}>
+          <h3 class="name">{{this.title}}</h3>
+          <ul class="testcases">
+            {{#each this.tests}}
+            <li {{#if (testSuccess this)}} class="testcase success" {{else}} class="testcase error" {{/if}}>
+              {{#if this.failureMessages}}
+              <div class="status">&#10005;</div>
+              <h4 class="name">{{this.title}}</h4>
+              <div class="duration">
+                duration:{{this.duration}}
+              </div>
+              <div class="error">
+                {{{getFailureMessage this}}}
+              </div>
+              {{else}}
+              <div class="status">&#10003;</div>
+              <h4 class="name">{{this.title}}</h4>
+              <div class="duration">
+                duration:{{this.duration}}
+              </div>
+              {{/if}}
+              {{#if this.imageData}}
+              <div >
+                input image:
+                <br>
+                <img src={{this.imageData.inputImage}} />
+              </div>
+              <hr>
+              <div>
+                expected image:
+                <br>
+                <img src={{this.imageData.expectedImage}} />
+              </div>
+              <hr>
+              <div>
+                actual image:
+                <br>
+                <img src={{this.imageData.actualImage}} />
+              </div>
+              {{else}}
+              <div>
+                no images used in this test
+              </div>
+              {{/if}}
+            </li>
+            {{/each}}
+          </ul>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+    {{/each}}
+  </div>
+
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('.package>.name').click(function() {
+        $(this).siblings('.suites').toggle();
+      });
+      $('li>.error, li>.duration, li>.body').click(function(e) {
+        e.stopPropagation();
+      });
+      $('li>.error, li>.duration, li>.body').hide();
+
+
+      $('li>.name').click(function(e) {
+        e.stopPropagation();
+        $(this).siblings('.duration, .error, .body').toggle();
+      });
+
+      $('.suites, .errmessages, .testcases').hide();
+
+      $('.suite, .errmessages').click(function() {
+        var $elem = $(this);
+        $elem.children('.testcases, .errors').toggle();
+        console.log('suite  triggered')
+      });
+      $('.toggleSuccess').click(function() {
+        $('.package.success').toggle();
+      });
+      $('.toggleError').click(function() {
+        $('.package.error').toggle();
+      });
+    });
+
+    $(function() {
+      $('div.stacktrace').on('click', 'a', function(evt) {
+        evt.preventDefault();
+
+        var $link = $(this);
+        var $code = $link.parent().find('code');
+
+        $code.is(':visible') ? $link.text('hide stacktrace') :
+          $link.text('view stacktrace');
+
+        $code.toggle();
+      });
+    });
+  </script>
+</body>
+
+</html>

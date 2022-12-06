@@ -1,0 +1,42 @@
+<h1 id="task">Test Engineer Charging Communication Task</h1>
+<h3 id="how-do-i-get-set-up-the-repo-">How do I get set up the repo?</h3>
+<ul>
+<li>run npm i</li>
+</ul>
+<h3 id="how-to-run-tests">How to run tests</h3>
+<ul>
+<li>npm start</li>
+</ul>
+<h3 id="what-to-expect">what to expect</h3>
+<ul>
+<li>an html report in ./reports folder along with xml junit for CD pipelines. and CLI report during execution</li>
+</ul>
+<h3 id="how-to-execute-the-tool-">How to execute the tool:</h3>
+<p>Transformation.exe <path_to_bmp> [without argument = clockwise rotation | 1 =
+counter clockwise rotation]
+e.g.:
+Transformation.exe sample.bmp 1 // rotate counter clockwise
+Transformation.exe sample.bmp // rotate clockwise</p>
+<h3 id="tests">tests</h3>
+<ul>
+<li>001 call the tool with no argument</li>
+<li>002 call the tool with non existing file</li>
+<li>003 call the tool with invalid format file</li>
+<li>004 call the tool with non existing file and 1 argument</li>
+<li>005 call the tool with invalid format file and 1 argument</li>
+<li>006 call the tool with valid file (clockwise test)</li>
+<li>007 call the tool with valid file and 1 argument (counter clockwise test)</li>
+</ul>
+<h3 id="approach-to-implement">Approach to implement</h3>
+<ul>
+<li>I thought I need to rotate the input myself and compare it with the tool&#39;s output.</li>
+<li><p>I chose python unittest at first as it is more convenient for image processsing. and I implemented functions to rotate and compare images (I attached the python functions in &quot;./python solution&quot; folder and a ssingle test for reference)</p>
+</li>
+<li><p>I came back to using Node.js because I used this package in my current work <a href="https://www.npmjs.com/package/nightwatch-html-reporter">nightwatch html reporter</a> and I built on it to create custom reports with handlebars.</p>
+</li>
+</ul>
+<p>so this is what I did,I used nodejs, customized a report for the solution, and used <a href="https://www.npmjs.com/package/jimp">JIMP</a> for image processing</p>
+<h3 id="author">Author</h3>
+<ul>
+<li>Alaa Sayed (alaa.elsayed.aly@gmail.com)</li>
+</ul>
